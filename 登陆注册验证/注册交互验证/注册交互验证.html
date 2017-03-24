@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>注册验证</title>
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<form>
+		<div>姓名：<input type="text" name="name" placeholder="请输入姓名"><em>1</em><div class="tip Name"></div>
+		</div>
+		<div>邮箱：<input type="email" name="email" placeholder="请输入邮箱"><em></em>
+		</div>
+		<div>手机：<input type="phone" name="phone" placeholder="请输入手机"><em></em>
+		</div>
+		<div>密码：<input type="password" name="password" placeholder="请输入密码"><em></em>
+		</div>
+		<div>确认密码：<input type="repassword" name="repassword" placeholder="请确认密码"><em></em>
+		</div>
+		<div><input type="button" value="提交" id="submmit"></div>
+	</form>
+<script type="text/javascript">
+	window.onload=function(){
+		
+		//获取元素
+		var inputs = document.getElementsByTagName('input');
+		var msgs = document.getElementsByTagName('em');
+		var tips = document.querySelectorAll('.tip');
+		var name = inputs[0];
+		var msgName = msgs[0];
+		var tipName = tips[0];
+
+		//当元素获得焦点时
+		name.onfocus=function(){
+			msgName.innerHTML='<i>数字 字母或汉字组成 长度3-20位</i>';
+		};
+
+		//当元素内容改变时
+		name.onkeyup=function(){
+			var len = count(this.value);
+			if(len == 0){
+				tipName.style.visibility = "hidden";
+			}else{
+				tipName.innerHTML= len +'个字符';
+			}
+			
+		};
+
+		//当元素失去焦点时
+		name.onblur=function(){
+			//检测是否为空
+			if(name.value == '')msgName.innerHTML="姓名不能为空！"
+			else if(count(this.value) < 3 || count(this.value) > 20){
+				msgName.innerHTML = "名称长度应大于3小于20"
+			}else if(this.value){
+
+			}else alert("success!")
+			//检测是否合法
+				//1、是否有非法字符
+				
+				//2、长度是否符合规则，大于3，小于20
+
+			//注册成功
+		};
+
+		function count(str){
+			return str.replace(/[^\x00-\xff]/g,"xx").length;
+		}
+
+		var sub = document.querySelector('#submmit');
+		sub.onclick=function(){
+			
+			msgName.innerText = name.value;
+			var email = inputs[1];
+			var msgName = msgs[1];
+			var phone = inputs[2];
+			var msgName = msgs[2];
+			var pass = inputs[3];
+			var msgName = msgs[3];
+			var rePass = inputs[4];
+			var msgName = msgs[4];
+			//alert(typeof inputs[0]);
+		};
+		
+	};	
+</script>
+</body>
+</html>
