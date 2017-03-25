@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>图片切换数组版</title>
+	<style>
+		#pic-list{
+			margin-top: 10px;
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- 根据数组知识实现简易的图片切换功能，实现上一张、下一张的基础切换 -->
+
+	<input type="button" name="up" value="上一张" id="up-pic">
+	<input type="button" name="down" value="下一张" id="down-pic">
+	<img src="img2.jpg" id="pic-list">
+	<script>
+
+		//获取各元素
+		var up = document.getElementById('up-pic');
+		var down = document.getElementById('down-pic');
+		var pic = document.getElementById('pic-list');
+		var num = 0;
+
+		var imgArr = ['img2','img1','img3'];
+		
+		up.onclick = function(){  //设置上一张点击事件 
+			if(num<=0){   //当图片编号小于等于1（最小编号）的时候跳回最后一张
+				num=2
+			}else{
+			num = num-1;   //根据点击实现图片编号递减
+			}
+			var src =imgArr[num]+'.jpg';  //根据拼接完成图片来源修改
+			pic.src = src;
+		}
+		down.onclick = function(){   //设置上一张点击事件 
+			if(num>=2){    //当图片编号大于等于3（最大编号）的跳回第一张
+				num=0
+			}else{  
+			num = num+1;  //根据点击实现图片编号递增
+			}
+			var src =imgArr[num]+'.jpg';   //根据拼接完成图片来源修改
+			pic.src = src;
+		}
+
+		
+
+	</script>
+
+</body>
+</html>
