@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HTML5 本地剪裁图片</title>
+	<style type="text/css">
+body{text-align:center;}
+#label{border:1px solid #ccc;background-color:#fff;text-align:center;height:300px; width:300px;margin:20px auto;position:relative;}
+#get_image{position:absolute;}
+#edit_pic{position:absolute;display:none;background:#000;}
+#cover_box{position: absolute;z-index: 9999;display:none;top:0px;left:0px;}
+#show_edit{margin: 0 auto;display:inline-block;}
+#show_pic{height:100px;width:100px;border:2px solid #000;overflow:hidden;margin:0 auto;display:inline-block; }
+</style>
+</head>
+<body>
+	<input type="file" id="post_file" name="file">
+	<button id="save_button">SAVE</button>
+	<div id="label">
+		<canvas id="get_image"></canvas>
+		<p>
+			<canvas id="cover_box"></canvas>
+			<canvas id="edit_pic"></canvas>
+		</p>
+	</div>
+	<p>
+		<span id="show_edit"></span>
+		<span id="show_pic"></span>
+	</p>
+
+<script>
+
+	var postFile = {
+		init:function(){
+			var t = this;
+			t.regional = document.querySelector("#label");
+			t.getImage = document.querySelector("#get_image");
+			t.coverBox = document.querySelector("#cover_box");
+			t.editPic = document.querySelector("#edit_pic");
+			t.px = 0; 	//background image x
+			t.py = 0;
+			t.sx = 15;  //crop area x
+			t.sy = 15;
+			t.sHeight = 150;   //crop area height
+			t.sWidth = 150;
+			document.querySelector("#post_file").addEventListener("change",t.handleFiles,false);
+		},
+
+		handleFiles:function(){
+			var fileList = this.files[0];
+			var oFReader = new FileReader();
+			oFReader.readAsDataURL(fileList);
+			oFReader.onload = function(oFEvent){
+				postFile.paintImage(oFEvent.target.result);
+			};
+		},
+
+		paintImage:function(url){
+			var t = this;
+			var createCanvas = t.getImage.getContext("2d");
+			var img = new Image();
+			img.src = url;
+			//console.log(img.width+"hhh"+t.regional.offsetHeight);
+			img.onload = function(){
+				console.log(img.width);
+				if(img.width < t.regional.offsetWidth && img.height < t.regional.offsetHeight){
+					t.imgWidth = img.width;
+					t.imgHeight = img.height;
+				}else{
+					var pWidth = img.width/(img.height/t.regional.offsetHeight);
+					var pHeight = img.height/(img.width/t.regional.offsetWidth);
+					t.imgWidth = img.width > img.height ? t.regional.offsetWidth : pWidth;
+					t.imgHeight = img.height > img.width ? t.regional.offsetHeight : pHeight;
+				}
+				
+				t.px = (t.regional.offsetWidth - t.imgWidth) / 2 +'px';
+				t.py = (t.regional.offsetHeight - t.imgHeight) / 2 + 'px';
+
+				t.getImage.height = t.imgHeight;
+				t.getImage.width = t.imgWidth;
+				t.getImage.style.left = t.px;
+				t.getImage.style.top = t.py;
+
+				createCanvas.drawImage(img,0,0,t.imgWidth,t.imgHeight);
+				t.imgUrl = t.getImage.toDataURL();
+				t.cutImage();
+				t.drag();
+			};
+		},
+
+		cutImage: function(){
+			var t = this;
+			 t.coverBox.height = t.imgHeight;
+			 t.coverBox.width = t.imgWidth;
+			 t.coverBox.style.display = "block";
+			 t.coverBox.style.left = t.px;
+			 t.coverBox.style.top = t.py;
+
+			 var cover = t.coverBox.getContext("2d");
+			 cover.fillStyle = "rgba(0,0,0,.5)";
+			 cover.fillRect(0,0,t.imgWidth,t.imgHeight);
+			 cover.clearRect(t.sx,t.sy,t.sHeight,t.sWidth);
+
+			 document.getElementById('show_edit').style.background = 'url(' + t.imgUrl + ')' + -t.sx + 'px ' + -t.sy + 'px no-repeat';
+    		 document.getElementById('show_edit').style.height = t.sHeight + 'px';
+    		 document.getElementById('show_edit').style.width = t.sWidth + 'px';
+		},
+
+
+	};
+
+	postFile.init();
+</script>
+</body>
+</html>
