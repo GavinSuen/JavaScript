@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>旋转木马幻灯片</title>
+	<link rel="shortcut icon" href="Unicorn.ico">
+	<meta charset="utf-8">
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+
+		ul,li{
+			list-style: none;
+		}
+		.content{
+			width: 600px;
+			height: 300px;
+			top: 50px;
+			left: 100px;
+			position: relative;
+			background: #ccc;
+		}
+		.poster-btn{
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 10;	
+		}
+		.btn-prev{
+
+		}
+		.btn-next{
+			right: 0;
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+		<ul>
+			<li>
+				<a href="#"><img src="1.jpg" alt="image"></a>
+				<a href="#"><img src="2.jpg" alt="image"></a>
+				<a href="#"><img src="3.jpg" alt="image"></a>
+				<a href="#"><img src="4.jpg" alt="image"></a>
+				<a href="#"><img src="5.jpg" alt="image"></a>
+			</li>
+		</ul>
+		<button class="poster-btn btn-prev"><</button>
+		<button class="poster-btn btn-next">></button>
+	</div>
+</body>
+</html>

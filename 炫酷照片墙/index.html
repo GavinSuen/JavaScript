@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>炫酷照片墙</title>
+	<link rel="shortcut icon" type="images/x-icon" href="imgs/unicorn.ico">
+	<style>
+		#imgsWrap{
+			width: 800px;
+			height: 500px;
+			margin: 60px auto;
+		}
+		#imgsWrap img{
+			width: 100px;
+			height: 100px;
+			float: left;
+		}
+		#imgsBtn{
+			display: block;
+			width: 150px;
+			margin: 0 auto;
+			font: 16px/40px "微软雅黑";
+			color: #fff;
+			cursor: pointer;
+			background: rgb(0,100,0);
+			border: none;
+			border-radius: 5px;
+			box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+		}
+	</style>
+</head>
+<body>
+	<div id="imgsWrap">
+		<img src="imgs/1.jpg" alt="">
+		<img src="imgs/2.jpg" alt="">
+		<img src="imgs/3.jpg" alt="">
+		<img src="imgs/4.jpg" alt="">
+		<img src="imgs/5.jpg" alt="">
+		<img src="imgs/6.jpg" alt="">
+		<img src="imgs/7.jpg" alt="">
+		<img src="imgs/8.jpg" alt="">
+		<img src="imgs/9.jpg" alt="">
+		<img src="imgs/10.jpg" alt="">
+		<img src="imgs/11.jpg" alt="">
+		<img src="imgs/12.jpg" alt="">
+		<img src="imgs/13.jpg" alt="">
+		<img src="imgs/14.jpg" alt="">
+		<img src="imgs/15.jpg" alt="">
+		<img src="imgs/16.jpg" alt="">
+		<img src="imgs/17.jpg" alt="">
+		<img src="imgs/18.jpg" alt="">
+		<img src="imgs/19.jpg" alt="">
+		<img src="imgs/20.jpg" alt="">
+		<img src="imgs/21.jpg" alt="">
+		<img src="imgs/22.jpg" alt="">
+		<img src="imgs/23.jpg" alt="">
+		<img src="imgs/24.jpg" alt="">
+		<img src="imgs/25.jpg" alt="">
+		<img src="imgs/26.jpg" alt="">
+		<img src="imgs/27.jpg" alt="">
+		<img src="imgs/28.jpg" alt="">
+		<img src="imgs/29.jpg" alt="">
+		<img src="imgs/30.jpg" alt="">
+		<img src="imgs/31.jpg" alt="">
+		<img src="imgs/32.jpg" alt="">
+		<img src="imgs/33.jpg" alt="">
+		<img src="imgs/34.jpg" alt="">
+		<img src="imgs/35.jpg" alt="">
+		<img src="imgs/36.jpg" alt="">
+		<img src="imgs/37.jpg" alt="">
+		<img src="imgs/38.jpg" alt="">
+		<img src="imgs/39.jpg" alt="">
+		<img src="imgs/40.jpg" alt="">
+	</div>
+	<button id="imgsBtn">点击查看效果</button>
+
+
+	<script type="text/javascript">
+		/*
+			运动的步骤：
+			1、闪的效果(瞬间宽高都变为0，scal，随机)
+			2、图片从小变到大，同时透明度从1变到0(必需是上一布效果走完了，它才会走)
+			3、图片旋转，同时透明度从0变到1,有层次感(位移)(当所有图片透明度都变为0的时候，才会走这一步)
+		*/
+
+		window.onload=function(){
+			var btn = document.querySelector("button");
+			var imgs = document.querySelectorAll("img");
+			var on = true;
+
+			//给按钮添加点击事件
+			btn.onclick=function(){
+				var endNum=0;
+				if(!on){
+					return;
+				}
+				on = false;
+				for(var i=0;i<imgs.length;i++){
+					(function(i){
+						setTimeout(function(){
+							montion(imgs[i],'500ms',function(){   //第一个效果
+								this.style.transform = 'scale(0)';
+								this.style.opacity = 0;
+							},function(){  //第二个效果
+								montion(this,'1s',function(){
+									this.style.transform = 'scale(1)';
+									this.style.opacity = 0; 
+								},function(){
+									endNum++;
+									if(endNum==imgs.length){
+										toBig();
+									}
+								});
+							})
+						},Math.random()*1000);
+					})(i);
+				}
+
+				
+			};
+
+			//第三个运动函数
+			function toBig(){
+				var allNum = 0;
+				for(var i=0;i<imgs.length;i++){
+					imgs[i].style.transition = '';
+					imgs[i].style.transform = 'rotateY(0deg) translateZ(-'+Math.random()*500+'px)';
+					(function(i){
+						setTimeout(function(){
+							montion(imgs[i],'2s',function(){
+								this.style.opacity = 1;
+								this.style.transform = 'rotateY(-360deg) translateZ(0)';
+							},function(){
+								allNum++;
+								if (allNum=50) {
+									on = true;
+								}
+							})
+						},Math.random()*1000);
+					})(i);
+				}
+			}
+
+			//运动函数(运动的对象，运动的时间，运动的属性函数，运动完成后的动作)
+			function montion(obj,time,doFn,callBack){
+				obj.style.transition = time;
+
+				var called = false; 
+
+				doFn.call(obj);  //将this指向obj
+				obj.addEventListener("transitionend",function(){
+					if(!called){
+						callBack&&callBack.call(obj);
+						called = true;
+					}
+				},false);
+			}
+		};
+	</script>
+</body>
+</html>
